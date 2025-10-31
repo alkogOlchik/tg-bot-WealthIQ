@@ -12,9 +12,15 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 import os
 import logging
+import concurrent.futures
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Настройка логирования
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 BOT_TOKEN = "7997248089:AAFPNCq42ZsC7yGLydXG5KS5CBPbjIzZL5Q"
@@ -25,7 +31,105 @@ dp = Dispatcher()
 # Словарь для хранения выбранного шаблона каждым пользователем
 user_templates = {}
 
-# Создаем Reply-клавиатуру (появляется там где обычно прикрепляют файлы)
+# КЭШИ для оптимизации
+template_cache = {}
+font_cache = {}
+
+# Пул потоков для тяжелых операций
+thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=3)
+
+# КОНФИГУРАЦИЯ ШАБЛОНОВ
+TEMPLATE_CONFIGS = {
+    "template_1": {
+        "name": "🎄 Елочка",
+        "description": "Классическая новогодняя открытка с елкой и украшениями",
+        "image_path": os.path.join(BASE_DIR, "templates", "card1.png"),
+        "font": {
+            "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
+            "size": 40,
+            "color": "white"
+        },
+        "text_position": {
+            "x": "center",
+            "y": 150,
+            "max_width": 400,
+            "line_height": 50
+        }
+    },
+    "template_2": {
+        "name": "❄️ Снежок",
+        "description": "Зимний пейзаж с снежинками и праздничной атмосферой",
+        "image_path": os.path.join(BASE_DIR, "templates", "card2.png"),
+        "font": {
+            "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
+            "size": 36,
+            "color": "#1AA87D"
+        },
+        "text_position": {
+            "x": 200,
+            "y": 150,
+            "max_width": 450,
+            "line_height": 45
+        }
+    },
+    "template_3": {
+        "name": "⭐️ Звездная ночь",
+        "description": "Ночное небо с звездами и снегом",
+        "image_path": os.path.join(BASE_DIR, "templates", "card3.png"),
+        "font": {
+            "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
+            "size": 42,  # ИСПРАВЛЕНО: был 300 (слишком большой!)
+            "color": "white"
+        },
+        "text_position": {
+            "x": "center",
+            "y": 300,
+            "max_width": 500,
+            "line_height": 55
+        }
+    }
+}
+
+
+# Функция для предзагрузки ресурсов
+def load_resources():
+    logger.info("Preloading resources...")
+
+    for template_id, config in TEMPLATE_CONFIGS.items():
+        try:
+            # Загружаем шаблоны
+            image_path = config["image_path"]
+            if os.path.exists(image_path):
+                img = Image.open(image_path)
+                template_cache[template_id] = img
+                logger.info(f"✓ Loaded template: {template_id}")
+            else:
+                logger.error(f"✗ Missing template: {image_path}")
+
+            # Загружаем шрифты
+            font_path = config["font"]["path"]
+            if os.path.exists(font_path):
+                font_cache[template_id] = ImageFont.truetype(
+                    font_path,
+                    config["font"]["size"]
+                )
+                logger.info(f"✓ Loaded font: {template_id}")
+            else:
+                # Fallback на системный шрифт
+                try:
+                    font_cache[template_id] = ImageFont.truetype("arial.ttf", config["font"]["size"])
+                    logger.info(f"✓ Using fallback font for: {template_id}")
+                except:
+                    font_cache[template_id] = ImageFont.load_default()
+                    logger.warning(f"⚠ Using default font for: {template_id}")
+
+        except Exception as e:
+            logger.error(f"Error loading {template_id}: {e}")
+
+    logger.info("Resources loaded!")
+
+
+# Создаем Reply-клавиатуру
 main_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="🎨 Создать открытку")],
@@ -56,12 +160,16 @@ async def send_welcome(message: types.Message):
 # Обработка кнопки "Создать открытку"
 @dp.message(F.text == "🎨 Создать открытку")
 async def create_new_card(message: types.Message):
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="🎄 Шаблон 1 - Елочка", callback_data="template_1")],
-            [InlineKeyboardButton(text="❄️ Шаблон 2 - Снежок", callback_data="template_2")]
-        ]
-    )
+    # ДИНАМИЧЕСКИ создаем кнопки из конфига шаблонов
+    keyboard_buttons = []
+    for template_id, config in TEMPLATE_CONFIGS.items():
+        keyboard_buttons.append([InlineKeyboardButton(
+            text=config["name"],
+            callback_data=template_id
+        )])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard_buttons)
+
     await message.answer(
         "Отлично! Выбери шаблон для своей открытки:",
         reply_markup=keyboard
@@ -69,14 +177,16 @@ async def create_new_card(message: types.Message):
 
 
 # Обработка выбора шаблона
-@dp.callback_query(F.data.startswith("template_"))
+@dp.callback_query(F.data.in_(TEMPLATE_CONFIGS.keys()))
 async def process_template(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
-    user_templates[user_id] = callback_query.data
+    template_id = callback_query.data
+    user_templates[user_id] = template_id
 
-    template_name = "🎄 Елочка" if callback_query.data == "template_1" else "❄️ Снежок"
+    config = TEMPLATE_CONFIGS[template_id]
+
     await callback_query.message.answer(
-        f"✨ Отлично! Выбран шаблон: *{template_name}*\n\n"
+        f"✨ Отлично! Выбран шаблон: *{config['name']}*\n\n"
         f"Теперь напиши текст, который хочешь разместить на открытке.\n"
         f"Например: *«С Новым Годом! Желаю счастья!»* 🌟",
         parse_mode="Markdown",
@@ -85,128 +195,32 @@ async def process_template(callback_query: types.CallbackQuery):
     await callback_query.answer()
 
 
-# Просмотр шаблонов
-@dp.message(F.text == "👀 Посмотреть шаблоны")
-async def show_templates(message: types.Message):
+# СИНХРОННАЯ функция создания карточки (для вызова в отдельном потоке)
+def create_card_sync(template_id, text):
     try:
-        templates_info = """
-📋 *Доступные шаблоны:*
+        config = TEMPLATE_CONFIGS[template_id]
 
-*🎄 Шаблон 1 - Елочка*
-Классическая новогодняя открытка с елкой и украшениями
+        # Используем кэшированные ресурсы
+        if template_id not in template_cache:
+            # Если нет в кэше, загружаем
+            if not os.path.exists(config["image_path"]):
+                raise FileNotFoundError(f"Template image not found: {config['image_path']}")
+            template_cache[template_id] = Image.open(config["image_path"])
 
-*❄️ Шаблон 2 - Снежок* 
-Зимний пейзаж с снежинками и праздничной атмосферой
-
-Хочешь создать открытку? Нажми «🎨 Создать открытку»!
-        """
-        await message.answer(templates_info, parse_mode="Markdown")
-
-        # Показываем превью шаблонов если файлы существуют
-        if os.path.exists("templates/card1.png"):
-            with open("templates/card1.png", "rb") as f1:
-                photo1 = BufferedInputFile(f1.read(), filename="template1.png")
-                await message.answer_photo(
-                    photo=photo1,
-                    caption="🎄 Шаблон 1 - Елочка"
-                )
-
-        if os.path.exists("templates/card2.png"):
-            with open("templates/card2.png", "rb") as f2:
-                photo2 = BufferedInputFile(f2.read(), filename="template2.png")
-                await message.answer_photo(
-                    photo=photo2,
-                    caption="❄️ Шаблон 2 - Снежок"
-                )
-
-    except Exception as e:
-        logger.error(f"Error showing templates: {e}")
-        await message.answer("❌ Не удалось загрузить шаблоны")
-
-
-# Помощь
-@dp.message(F.text == "ℹ️ Помощь")
-async def show_help(message: types.Message):
-    help_text = """
-🤖 *Как пользоваться ботом:*
-
-*🎨 Создать открытку:*
-1. Нажми «Создать открытку»
-2. Выбери понравившийся шаблон
-3. Напиши текст поздравления
-4. Получи готовую открытку!
-
-*👀 Посмотреть шаблоны:*
-- Посмотри все доступные шаблоны перед созданием
-
-*📌 Советы:*
-- Текст лучше писать короткий и ёмкий
-- Можно использовать эмодзи 🎄⭐️🎁
-- Открытку можно отправить друзьям прямо из Telegram
-
-*Команды:*
-/start - показать это меню
-/show_templates - посмотреть шаблоны
-
-*Приятного творчества!* 🎨✨
-    """
-    await message.answer(help_text, parse_mode="Markdown")
-
-
-# Обработка текста и создание открытки
-@dp.message(F.text)
-async def create_card(message: types.Message):
-    user_id = message.from_user.id
-
-    # Пропускаем команды меню (они уже обработаны выше)
-    if message.text in ["🎨 Создать открытку", "👀 Посмотреть шаблоны", "ℹ️ Помощь"]:
-        return
-
-    # Проверяем, что пользователь выбрал шаблон
-    if user_id not in user_templates:
-        await message.answer(
-            "Чтобы создать открытку, сначала выбери шаблон — нажми «🎨 Создать открытку» 🎅",
-            reply_markup=main_keyboard
-        )
-        return
-
-    # Проверяем, что сообщение не команда
-    if message.text.startswith('/'):
-        return
-
-    try:
-        # Определяем, какой шаблон выбрал пользователь
-        template_name = user_templates[user_id]
-        template_path = "templates/card1.png" if template_name == "template_1" else "templates/card2.png"
-
-        # Проверяем существование файла шаблона
-        if not os.path.exists(template_path):
-            await message.answer("❌ Файл шаблона не найден. Обратитесь к администратору.")
-            logger.error(f"Template file not found: {template_path}")
-            return
-
-        # Загружаем шаблон
-        img = Image.open(template_path)
+        img = template_cache[template_id].copy()  # Клонируем шаблон
         draw = ImageDraw.Draw(img)
 
-        # Подключаем шрифт с обработкой ошибок
-        font_path = os.path.join(os.path.dirname(__file__), "fonts", "festive.ttf")
-
-        # Проверяем существование шрифта
-        if not os.path.exists(font_path):
-            # Используем стандартный шрифт если festive.ttf не найден
+        # Получаем шрифт из кэша или используем fallback
+        font = font_cache.get(template_id)
+        if font is None:
             try:
-                font = ImageFont.truetype("arial.ttf", 40)
+                font = ImageFont.truetype("arial.ttf", config["font"]["size"])
             except:
                 font = ImageFont.load_default()
-                logger.warning("Using default font - arial.ttf not available")
-        else:
-            font = ImageFont.truetype(font_path, 40)
 
-        # Наносим текст с базовой обработкой переноса
-        text = message.text
-        # Простой перенос текста
-        max_width = img.width - 200  # Отступы по бокам
+        # Обработка переноса текста с учетом конфига
+        position_config = config["text_position"]
+        max_width = position_config["max_width"]
         lines = []
         words = text.split()
         current_line = []
@@ -226,26 +240,128 @@ async def create_card(message: types.Message):
         if current_line:
             lines.append(' '.join(current_line))
 
-        # Рисуем текст построчно
-        y_position = 200
-        line_height = 50
+        # Рисуем текст с учетом позиционирования из конфига
+        y_position = position_config["y"]
+        line_height = position_config["line_height"]
 
         for line in lines:
-            # Центрируем текст
             bbox = draw.textbbox((0, 0), line, font=font)
             text_width = bbox[2] - bbox[0]
-            x_position = (img.width - text_width) // 2
 
-            draw.text((x_position, y_position), line, font=font, fill="white")
+            # Позиционирование по X из конфига
+            if position_config["x"] == "center":
+                x_position = (img.width - text_width) // 2
+            else:
+                x_position = position_config["x"]
+
+            # Цвет текста из конфига
+            draw.text((x_position, y_position), line, font=font, fill=config["font"]["color"])
             y_position += line_height
 
         # Сохраняем в память
         output = io.BytesIO()
-        img.save(output, format="PNG")
+        img.save(output, format="PNG", optimize=True)
         output.seek(0)
 
-        # Используем BufferedInputFile вместо InputFile
+        return output
+
+    except Exception as e:
+        logger.error(f"Error in create_card_sync: {e}")
+        raise
+
+
+# АСИНХРОННАЯ обертка
+async def create_card_with_config(template_id, text):
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(
+        thread_pool,
+        lambda: create_card_sync(template_id, text)
+    )
+
+
+# Просмотр шаблонов (ИСПРАВЛЕНО: убрал лишние символы)
+@dp.message(F.text == "👀 Посмотреть шаблоны")
+async def show_templates(message: types.Message):
+    try:
+        templates_info = "📋 *Доступные шаблоны:*\n\n"
+
+        # ДИНАМИЧЕСКИ показываем информацию о шаблонах из конфига
+        for template_id, config in TEMPLATE_CONFIGS.items():
+            templates_info += f"*{config['name']}*\n"
+            templates_info += f"{config['description']}\n\n"
+
+        templates_info += "Хочешь создать открытку? Нажми «🎨 Создать открытку»!"
+
+        await message.answer(templates_info, parse_mode="Markdown")
+
+        # Показываем превью шаблонов
+        for template_id, config in TEMPLATE_CONFIGS.items():
+            if os.path.exists(config["image_path"]):
+                with open(config["image_path"], "rb") as f:
+                    photo = BufferedInputFile(f.read(), filename=f"{template_id}.png")
+                    await message.answer_photo(
+                        photo=photo,
+                        caption=f"{config['name']}\n{config['description']}"
+                    )
+
+    except Exception as e:
+        logger.error(f"Error showing templates: {e}")
+        await message.answer("❌ Не удалось загрузить шаблоны")
+
+
+# Помощь
+@dp.message(F.text == "ℹ️ Помощь")
+async def show_help(message: types.Message):
+    help_text = """
+🤖 *Как пользоваться ботом:*
+
+*🎨 Создать открытку:*
+1. Нажми «Создать открытку»
+2. Выбери понравившийся шаблон
+3. Напиши текст поздравления  
+4. Получи готовую открытку!
+
+Каждый шаблон имеет свой уникальный стиль, шрифт и цвет текста! 🎨
+
+*Приятного творчества!* ✨
+    """
+    await message.answer(help_text, parse_mode="Markdown")
+
+
+# Обработка текста и создание открытки
+@dp.message(F.text)
+async def create_card(message: types.Message):
+    user_id = message.from_user.id
+
+    # Пропускаем команды меню
+    if message.text in ["🎨 Создать открытку", "👀 Посмотреть шаблоны", "ℹ️ Помощь"]:
+        return
+
+    # Проверяем, что пользователь выбрал шаблон
+    if user_id not in user_templates:
+        await message.answer(
+            "Чтобы создать открытку, сначала выбери шаблон — нажми «🎨 Создать открытку» 🎅",
+            reply_markup=main_keyboard
+        )
+        return
+
+    # Проверяем, что сообщение не команда
+    if message.text.startswith('/'):
+        return
+
+    try:
+        template_id = user_templates[user_id]
+
+        # Показываем что начали создание
+        processing_msg = await message.answer("🔄 Создаю открытку...")
+
+        # Используем оптимизированную функцию
+        output = await create_card_with_config(template_id, message.text)
+
         photo = BufferedInputFile(output.getvalue(), filename="card.png")
+
+        # Удаляем сообщение "Создаю..."
+        await processing_msg.delete()
 
         # Отправляем готовую открытку
         await message.answer_photo(
@@ -264,7 +380,7 @@ async def create_card(message: types.Message):
         )
 
     finally:
-        # Удаляем выбор шаблона после отправки (даже если была ошибка)
+        # Удаляем выбор шаблона после отправки
         if user_id in user_templates:
             del user_templates[user_id]
 
@@ -275,10 +391,22 @@ async def show_templates_command(message: types.Message):
     await show_templates(message)
 
 
+# Функция для запуска бота
 async def main():
-    logger.info("Bot started")
+    # Предзагружаем ресурсы
+    load_resources()
+
+    logger.info("🤖 Bot started!")
     await dp.start_polling(bot)
 
 
+# Запуск бота
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user")
+    except Exception as e:
+        logger.error(f"Bot crashed: {e}")
+    finally:
+        thread_pool.shutdown()
