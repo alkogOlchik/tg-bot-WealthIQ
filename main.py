@@ -36,7 +36,7 @@ font_path = os.path.join(BASE_DIR, "fonts", "festive.ttf")
 # КОНФИГУРАЦИЯ ШАБЛОНОВ
 TEMPLATE_CONFIGS = {
     "template_1": {
-        "name": "🍊 Мандаринка",
+        "name": "С мандаринами",
         "description": "Классическая новогодняя открытка с мандаринкой",
         "image_path": os.path.join(BASE_DIR, "templates", "card1.png"),
         "image_path": os.path.join(BASE_DIR, "templates", "card1.png"),
@@ -53,7 +53,7 @@ TEMPLATE_CONFIGS = {
         }
     },
     "template_2": {
-        "name": "❄️ Снежок",
+        "name": "С красной икрой",
         "description": "Зимний пейзаж с снежинками и праздничной атмосферой",
         "image_path": os.path.join(BASE_DIR, "templates", "card2.png"),
         "font": {
@@ -69,7 +69,7 @@ TEMPLATE_CONFIGS = {
         }
     },
     "template_3": {
-        "name": "⭐️ Зимнее утро",
+        "name": "С леденцом",
         "description": "Зимнее утро с ярким солнцем и снегом",
         "image_path": os.path.join(BASE_DIR, "templates", "card3.png"),
         "font": {
@@ -119,17 +119,15 @@ main_keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True,
     row_width=2
 )
-main_keyboard.add(KeyboardButton("🎨 Создать открытку"))
-main_keyboard.add(KeyboardButton("👀 Посмотреть шаблоны"), KeyboardButton("ℹ️ Помощь"))
+main_keyboard.add(KeyboardButton("Создать открытку"))
+main_keyboard.add(KeyboardButton("Посмотреть шаблоны"), KeyboardButton("Помощь"))
 
 
 # /start — приветствие
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     welcome_text = """
-🎄 *Привет! Я бот для создания новогодних открыток!* 
-
-Я помогу тебе создать красивую поздравительную открытку с твоим текстом. 
+🎄 Привет! В этом боте ты можешь сделать персонализированные новогодние открытки для своих клиентов. Выбери шаблон, потом отправь текст и получи открытку! Лучше в тексте указать имя и отчество клиента, чтобы получилось адресно.
 
 Выбери в меню ниже, что ты хочешь сделать:
     """
@@ -142,7 +140,7 @@ def send_welcome(message):
 
 
 # Обработка кнопки "Создать открытку"
-@bot.message_handler(func=lambda message: message.text == "🎨 Создать открытку")
+@bot.message_handler(func=lambda message: message.text == "Создать открытку")
 def create_new_card(message):
     # ДИНАМИЧЕСКИ создаем кнопки из конфига шаблонов
     keyboard = InlineKeyboardMarkup(row_width=1)
@@ -158,7 +156,6 @@ def create_new_card(message):
         reply_markup=keyboard
     )
 
-
 # Обработка выбора шаблона
 @bot.callback_query_handler(func=lambda call: call.data in TEMPLATE_CONFIGS.keys())
 def process_template(call):
@@ -170,9 +167,9 @@ def process_template(call):
 
     bot.send_message(
         call.message.chat.id,
-        f"✨ Отлично! Выбран шаблон: *{config['name']}*\n\n"
+        f"Отлично! Выбран шаблон: *{config['name']}*\n\n"
         f"Теперь напиши текст, который хочешь разместить на открытке.\n"
-        f"Например: *«С Новым Годом! Желаю счастья!»* 🌟",
+        f"Например, «Иван Иванович, пусть 2026 принесет Вам радость, вдохновение и только приятные сюрпризы!»",
         parse_mode="Markdown",
         reply_markup=main_keyboard
     )
@@ -204,14 +201,8 @@ def calculate_font_size(text, template_id):
 
 def get_dynamic_font(template_id, text):
     font_size = calculate_font_size(text, template_id)
-    try:
-        font = ImageFont.truetype(font_path, font_size)
-        logger.info(f"✓ Loaded dynamic font for template {template_id}: size={font_size}, text='{text}'")
-        return font
-    except Exception as e:
-        logger.error(f"✗ Failed to load font {font_path} with size {font_size}: {e}")
-        logger.info("⚠ Using fallback font")
-        return ImageFont.load_default()
+    font = ImageFont.truetype(font_path, font_size)
+    return font
 
 
 def create_card_sync(template_id, text):
@@ -295,16 +286,16 @@ def create_card_sync(template_id, text):
 
 
 # Просмотр шаблонов
-@bot.message_handler(func=lambda message: message.text == "👀 Посмотреть шаблоны")
+@bot.message_handler(func=lambda message: message.text == "Посмотреть шаблоны")
 def show_templates(message):
     try:
-        templates_info = "📋 *Доступные шаблоны:*\n\n"
+        templates_info = "*Доступные шаблоны:*\n\n"
 
         for template_id, config in TEMPLATE_CONFIGS.items():
             templates_info += f"*{config['name']}*\n"
             templates_info += f"{config['description']}\n\n"
 
-        templates_info += "Хочешь создать открытку? Нажми «🎨 Создать открытку»!"
+        templates_info += "Хочешь создать открытку? Нажми «Создать открытку»!"
 
         bot.send_message(message.chat.id, templates_info, parse_mode="Markdown")
 
@@ -324,7 +315,7 @@ def show_templates(message):
 
 
 # Помощь
-@bot.message_handler(func=lambda message: message.text == "ℹ️ Помощь")
+@bot.message_handler(func=lambda message: message.text == "Помощь")
 def show_help(message):
     help_text = """
 🤖 *Как пользоваться ботом:*
@@ -348,14 +339,14 @@ def handle_text(message):
     user_id = message.from_user.id
 
     # Пропускаем команды меню
-    if message.text in ["🎨 Создать открытку", "👀 Посмотреть шаблоны", "ℹ️ Помощь"]:
+    if message.text in ["Создать открытку", "Посмотреть шаблоны", "Помощь"]:
         return
 
     # Проверяем, что пользователь выбрал шаблон
     if user_id not in user_templates:
         bot.send_message(
             message.chat.id,
-            "Чтобы создать открытку, сначала выбери шаблон — нажми «🎨 Создать открытку» 🎅",
+            "Чтобы создать открытку, сначала выбери шаблон — нажми «Создать открытку»",
             reply_markup=main_keyboard
         )
         return
@@ -380,8 +371,7 @@ def handle_text(message):
         bot.send_photo(
             message.chat.id,
             output,
-            caption="🎉 *Готово! Твоя открытка создана!*\n\n"
-                    "Можешь отправить её друзьям или создать ещё одну через меню ниже!",
+            caption="🎉 *Готово! Отправляй клиенту и возвращайся за новой открыткой.*\n\n",
             parse_mode="Markdown",
             reply_markup=main_keyboard
         )
@@ -405,5 +395,18 @@ if __name__ == "__main__":
     # Предзагружаем ресурсы
     load_resources()
 
-    logger.info("🤖 Bot started!")
-    bot.infinity_polling(timeout=60, long_polling_timeout=30)
+    logger.info("fBot started!")
+
+    try:
+        # Добавляем параметр skip_pending для пропуска старых сообщений
+        bot.infinity_polling(
+            timeout=60,
+            long_polling_timeout=30,
+            skip_pending=True  # ← Пропускает ожидающие сообщения
+        )
+    except Exception as e:
+        logger.error(f"Bot polling failed: {e}")
+        print(f"Ошибка: {e}")
+        print("Возможно, бот уже запущен в другом окне.")
+
+
