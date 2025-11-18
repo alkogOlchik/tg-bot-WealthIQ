@@ -1,4 +1,5 @@
-from app.config import bot, TEMPLATE_CONFIGS, user_templates, get_main_keyboard
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from config import bot, TEMPLATE_CONFIGS, user_templates, logger, get_main_keyboard
 
 
 @bot.callback_query_handler(func=lambda call: call.data in TEMPLATE_CONFIGS.keys())

@@ -1,5 +1,9 @@
-from app.config import logger, bot
-from app.services.image import load_resources
+import logging, telebot
+from config import logger, bot
+from services.image import load_resources
+import handlers.message
+import handlers.callback
+
 
 if __name__ == "__main__":
     # Предзагружаем ресурсы

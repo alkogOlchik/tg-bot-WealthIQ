@@ -1,7 +1,8 @@
 import os, io
+import logging
 from PIL import Image, ImageDraw, ImageFont
-from app.config import TEMPLATE_CONFIGS, template_cache, logger
-from app.services.fonts import get_dynamic_font
+from config import TEMPLATE_CONFIGS, template_cache, logger
+from services.fonts import get_dynamic_font
 
 
 def create_card_sync(template_id, text):

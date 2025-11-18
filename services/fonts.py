@@ -1,6 +1,7 @@
 import os
-from PIL import ImageFont
-from app.config import TEMPLATE_CONFIGS, font_path, logger
+import math
+from PIL import ImageFont, ImageDraw
+from config import TEMPLATE_CONFIGS, font_path, logger
 
 
 def calculate_font_size(text, template_id, draw=None, test_font=None):

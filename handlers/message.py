@@ -1,6 +1,6 @@
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from app.config import bot, TEMPLATE_CONFIGS, user_templates, logger, get_main_keyboard
-from app.services.image import create_card_sync
+from config import bot, TEMPLATE_CONFIGS, user_templates, logger, get_main_keyboard
+from services.image import create_card_sync, load_resources
 import os
 
 @bot.message_handler(commands=['start'])
