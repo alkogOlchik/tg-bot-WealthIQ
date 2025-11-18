@@ -27,8 +27,8 @@ TEMPLATE_CONFIGS = {
             "color": "white"
         },
         "text_position": {
-            "x": "center",
-            "y": 1000,
+            "x": 100,
+            "y": 1150,
             "max_width": 800,
             "max_height": 300,  # ← Добавьте
             "line_height": 70,
@@ -42,17 +42,17 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "card2.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 28,
-            "color": "#07381F"
+            "size": 100,
+            "color": "white"
         },
         "text_position": {
-            "x": 150,
-            "y": 150,
-            "max_width": 300,
-            "max_height": 200,  # ← Добавьте
-            "line_height": 50,
-            "min_font_size": 12,  # ← Добавьте
-            "max_font_size": 50   # ← Добавьте
+            "x": 100,
+            "y": 1150,
+            "max_width": 800,
+            "max_height": 300,  # ← Добавьте
+            "line_height": 70,
+            "min_font_size": 20,  # ← Добавьте
+            "max_font_size": 150  # ← Добавьте
         }
     },
     "template_3": {
@@ -61,17 +61,17 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "card3.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 200,
+            "size": 100,
             "color": "white"
         },
         "text_position": {
-            "x": "center",
-            "y": 150,
-            "max_width": 2000,
-            "max_height": 600,   # ← Добавьте
-            "line_height": 200,
-            "min_font_size": 30,  # ← Добавьте
-            "max_font_size": 250  # ← Добавьте
+            "x": 100,
+            "y": 1150,
+            "max_width": 800,
+            "max_height": 300,  # ← Добавьте
+            "line_height": 70,
+            "min_font_size": 20,  # ← Добавьте
+            "max_font_size": 150  # ← Добавьте
         }
     }
 }

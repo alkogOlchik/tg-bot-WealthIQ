@@ -2,7 +2,7 @@ import os, io
 import logging
 from PIL import Image, ImageDraw, ImageFont
 from config import TEMPLATE_CONFIGS, template_cache, logger
-from services.fonts import get_dynamic_font
+from services.fonts import get_dynamic_font, calculate_line_height
 
 
 def create_card_sync(template_id, text):
@@ -27,7 +27,6 @@ def create_card_sync(template_id, text):
 
         # Используем точный расчет с передачей draw
         font = get_dynamic_font(template_id, text, draw)
-
         # Обработка переноса текста
         lines = wrap_text(draw, text, font, config["text_position"]["max_width"])
 
@@ -77,7 +76,7 @@ def draw_text_on_image(draw, lines, font, config, image_height):
     Рисует текст на изображении с правильным позиционированием
     """
     position_config = config["text_position"]
-    line_height = position_config["line_height"]
+    line_height = calculate_line_height(font.size, 2)
 
     # Рассчитываем общую высоту текстового блока
     total_text_height = len(lines) * line_height

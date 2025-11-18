@@ -222,7 +222,12 @@ def wrap_text_to_fit(draw, text, font, max_width):
         lines.append(' '.join(current_line))
 
     return lines
-
+def calculate_line_height(font_size, line_height_ratio=1.6):
+    """
+    Автоматически рассчитывает межстрочное расстояние
+    line_height_ratio: 1.2-1.4 (плотно), 1.5-1.8 (нормально), 2.0+ (просторно)
+    """
+    return int(font_size * line_height_ratio)
 
 def all_lines_fit(draw, lines, font, max_width):
     """Проверяет что все строки влезают в максимальную ширину"""
