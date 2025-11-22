@@ -23,17 +23,19 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "card1.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 100,
+            "size": 20,
             "color": "white"
         },
         "text_position": {
-            "x": 100,
-            "y": 1150,
-            "max_width": 800,
-            "max_height": 300,  # ← Добавьте
-            "line_height": 70,
-            "min_font_size": 20,  # ← Добавьте
-            "max_font_size": 150  # ← Добавьте
+            "x": "left",
+            "x_offset": 35,
+            "y": 510,
+            "max_width": 250,
+            "max_height": 150,
+            "line_height": 30,
+            "min_font_size": 8,
+            "max_font_size": 20,
+            "align": "left"
         }
     },
     "template_2": {
@@ -42,17 +44,19 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "card2.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 100,
+            "size":20,
             "color": "white"
         },
         "text_position": {
-            "x": 100,
-            "y": 1150,
-            "max_width": 800,
-            "max_height": 300,  # ← Добавьте
-            "line_height": 70,
-            "min_font_size": 20,  # ← Добавьте
-            "max_font_size": 150  # ← Добавьте
+            "x": "left",
+            "x_offset": 35,
+            "y": 510,
+            "max_width": 250,
+            "max_height": 150,
+            "line_height": 30,
+            "min_font_size": 8,
+            "max_font_size": 20,
+            "align": "left"
         }
     },
     "template_3": {
@@ -61,17 +65,19 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "card3.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 100,
+            "size": 20,
             "color": "white"
         },
         "text_position": {
-            "x": 100,
-            "y": 1150,
-            "max_width": 800,
-            "max_height": 300,  # ← Добавьте
-            "line_height": 70,
-            "min_font_size": 20,  # ← Добавьте
-            "max_font_size": 150  # ← Добавьте
+            "x": "left",
+            "x_offset": 35,
+            "y": 510,
+            "max_width": 250,
+            "max_height": 150,
+            "line_height": 30,
+            "min_font_size": 8,
+            "max_font_size": 20,
+            "align": "left"
         }
     }
 }

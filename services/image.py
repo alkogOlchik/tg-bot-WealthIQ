@@ -73,10 +73,11 @@ def wrap_text(draw, text, font, max_width):
 
 def draw_text_on_image(draw, lines, font, config, image_height):
     """
-    Рисует текст на изображении с правильным позиционированием
+    Рисует текст на изображении с выравниванием по левому краю
     """
     position_config = config["text_position"]
-    line_height = calculate_line_height(font.size, 2)
+    # Используем уменьшенный множитель для более плотного межстрочного интервала (было 2.0, стало 1.3)
+    line_height = calculate_line_height(font.size, 1.3)
 
     # Рассчитываем общую высоту текстового блока
     total_text_height = len(lines) * line_height
@@ -88,16 +89,19 @@ def draw_text_on_image(draw, lines, font, config, image_height):
     # Рассчитываем вертикальное центрирование
     y_start_position = text_area_y_start + (text_area_height - total_text_height) // 2
 
-    # Рисуем текст с выравниванием по центру
+    # Выравнивание по левому краю - используем x_offset или x если это число
+    x_config = position_config.get("x", "left")
+    if isinstance(x_config, (int, float)):
+        # Если x - это число, используем его как позицию
+        x_position = x_config
+    else:
+        # Если x - это строка (left/center), используем x_offset или 0 по умолчанию
+        x_position = position_config.get("x_offset", 0)
+
+    # Рисуем текст с выравниванием по левому краю
     y_position = y_start_position
 
     for line in lines:
-        bbox = draw.textbbox((0, 0), line, font=font)
-        text_width = bbox[2] - bbox[0]
-
-        # Горизонтальное центрирование
-        x_position = (draw.im.size[0] - text_width) // 2
-
         draw.text((x_position, y_position), line, font=font, fill=config["font"]["color"])
         y_position += line_height
 

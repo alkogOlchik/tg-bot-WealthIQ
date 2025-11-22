@@ -197,7 +197,7 @@ def calculate_font_size_precise(text, template_id, draw, test_font):
     return best_size
 
 
-def wrap_text_to_fit(draw, text, font, max_width):
+def wrap_text_to_fit(draw, text, font, max_width, align="left"):
     """Разбивает текст на строки чтобы влезал в максимальную ширину"""
     words = text.split()
     if not words:
@@ -222,6 +222,30 @@ def wrap_text_to_fit(draw, text, font, max_width):
         lines.append(' '.join(current_line))
 
     return lines
+
+
+def draw_text_with_alignment(draw, text, font, position_config, color):
+    """
+    Рисует текст с учетом выравнивания
+    """
+    x = position_config["x"]
+    y = position_config["y"]
+    max_width = position_config["max_width"]
+    align = position_config.get("align", "left")
+
+    # Разбиваем текст на строки
+    lines = wrap_text_to_fit(draw, text, font, max_width)
+
+    # Рисуем многострочный текст с выравниванием
+    draw.multiline_text(
+        (x, y),
+        "\n".join(lines),
+        font=font,
+        fill=color,
+        align=align,  # ← Ключевой параметр для выравнивания
+        spacing=position_config.get("line_height", 10)
+    )
+
 def calculate_line_height(font_size, line_height_ratio=1.6):
     """
     Автоматически рассчитывает межстрочное расстояние
