@@ -73,8 +73,7 @@ def suggest_texts(message):
     keyboard = InlineKeyboardMarkup(row_width=2)
     for idx, (text_id, config) in enumerate(text_pool.items(), start=1):
         preview_text = _preview_text(config, language)
-        preview = f"{idx}. {config['title']}\n\n{preview_text}"
-        bot.send_message(message.chat.id, preview)
+        bot.send_message(message.chat.id, f"{idx}. {preview_text}")
         keyboard.add(InlineKeyboardButton(
             text=config.get("button_label", f"#{idx}"),
             callback_data=f"text_template:{language}:{text_id}"
