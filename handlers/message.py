@@ -170,7 +170,7 @@ def handle_text(message):
 
         final_text = template["text"].replace("{name}", name_value)
 
-        bot.send_message(message.chat.id, "Подставила имя в текстовку и создаю открытку 👇")
+        bot.send_message(message.chat.id, "Подставил имя в текстовку и создаю открытку 👇")
         generate_card(message.chat.id, user_id, final_text, template_id=template_id)
         return
 

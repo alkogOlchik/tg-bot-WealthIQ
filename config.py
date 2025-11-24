@@ -81,7 +81,7 @@ TEMPLATE_CONFIGS = {
         }
     },
     "template_4": {
-        "name": "Mandarin vibes (ENG)",
+        "name": "In English, please!",
         "language": "en",
         "image_path": os.path.join(BASE_DIR, "templates", "card4.png"),
         "font": {
@@ -105,19 +105,19 @@ TEMPLATE_CONFIGS = {
 
 TEXT_TEMPLATES = {
     "ru_1": {
-        "title": "Теплое поздравление",
+        "title": "Текст 1",
         "button_label": "Текст 1",
         "text": "{name}, пусть 2026 год будет таким же свежим и солнечным, как первые новогодние мандарины. С праздником вас!",
         "requires_name": True
     },
     "ru_2": {
-        "title": "Про вдохновение",
+        "title": "Текст 2",
         "button_label": "Текст 2",
         "text": "{name}, пусть 2026 принесет вам радость, вдохновение и только приятные сюрпризы! С наступающим!",
         "requires_name": True
     },
     "ru_3": {
-        "title": "Про дела",
+        "title": "Текст 3",
         "button_label": "Текст 3",
         "text": "{name}, желаю, чтобы 2026 стал для вас годом больших идей, удачных решений и красивых моментов!",
         "requires_name": True
@@ -126,7 +126,7 @@ TEXT_TEMPLATES = {
 
 ENG_TEXT_TEMPLATES = {
     "en_1": {
-        "title": "Tasteful year wishes",
+        "title": "Text",
         "button_label": "Text 1",
         "text": "May the coming year carry a sense of taste in everything you do. Wishing you joyful holidays!",
         "requires_name": False
