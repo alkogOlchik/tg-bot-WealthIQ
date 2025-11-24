@@ -1,13 +1,23 @@
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from config import bot, TEMPLATE_CONFIGS, user_templates, logger, get_main_keyboard
-from services.image import create_card_sync, load_resources
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
+from config import (
+    bot,
+    TEMPLATE_CONFIGS,
+    TEXT_TEMPLATES,
+    ENG_TEXT_TEMPLATES,
+    user_templates,
+    pending_text_templates,
+    logger,
+    get_main_keyboard
+)
+from handlers.common import generate_card
+from services.image import load_resources
 import os
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     welcome_text = """
-🎄 Привет! В этом боте ты можешь сделать персонализированные новогодние открытки для своих клиентов. Выбери шаблон, потом отправь текст и получи открытку! Лучше в тексте указать имя и отчество клиента, чтобы получилось адресно.
-
+🎄 Привет! В этом боте ты можешь сделать персонализированные новогодние открытки для своих клиентов. Выбери шаблон, потом отправь боту текст поздравления и получи готовую открытку!
+Лучше в тексте указать имя и отчество клиента. И лучше не писать много, достаточно одного предложения. Если не знаешь, что написать, нажми «Посмотреть текстовки».
 Выбери в меню ниже, что ты хочешь сделать:
     """
     bot.send_message(
@@ -32,14 +42,64 @@ def create_new_card(message):
         reply_markup=keyboard
     )
 
-@bot.message_handler(func=lambda message: message.text == "Посмотреть шаблоны")
+@bot.message_handler(func=lambda message: message.text == "Выбрать текстовку")
+def suggest_texts(message):
+    user_id = message.from_user.id
+
+    if user_id not in user_templates:
+        bot.send_message(
+            message.chat.id,
+            "Сначала выбери шаблон открытки — нажми «Создать открытку», выбери вариант, а потом возвращайся к текстовкам.",
+            reply_markup=get_main_keyboard()
+        )
+        return
+
+    template_id = user_templates[user_id]
+    template_config = TEMPLATE_CONFIGS.get(template_id)
+    language = template_config.get("language", "ru") if template_config else "ru"
+    text_pool = _get_text_pool(language)
+
+    if not text_pool:
+        bot.send_message(
+            message.chat.id,
+            "Для выбранного шаблона пока нет готовых текстовок. Напиши свой текст вручную.",
+            reply_markup=get_main_keyboard()
+        )
+        return
+
+    header = "Вот заготовки под этот шаблон. Выбери подходящую:"
+    bot.send_message(message.chat.id, header)
+
+    keyboard = InlineKeyboardMarkup(row_width=2)
+    for idx, (text_id, config) in enumerate(text_pool.items(), start=1):
+        preview_text = _preview_text(config, language)
+        preview = f"{idx}. {config['title']}\n\n{preview_text}"
+        bot.send_message(message.chat.id, preview)
+        keyboard.add(InlineKeyboardButton(
+            text=config.get("button_label", f"#{idx}"),
+            callback_data=f"text_template:{language}:{text_id}"
+        ))
+
+    keyboard.add(InlineKeyboardButton(
+        text="✍️ Свой текст",
+        callback_data="text_template:custom"
+    ))
+
+    bot.send_message(
+        message.chat.id,
+        "Когда определишься, просто нажми на кнопку ниже:",
+        reply_markup=keyboard
+    )
+
+@bot.message_handler(func=lambda message: message.text == "Посмотреть открытки")
 def show_templates(message):
     try:
-        templates_info = "*Доступные шаблоны:*\n\n"
+        templates_info = "*Доступные открытки:*\n\n"
 
         for template_id, config in TEMPLATE_CONFIGS.items():
+            description = config.get("description", "— описание скоро добавим —")
             templates_info += f"*{config['name']}*\n"
-            templates_info += f"{config['description']}\n\n"
+            templates_info += f"{description}\n\n"
 
         templates_info += "Хочешь создать открытку? Нажми «Создать открытку»!"
 
@@ -79,7 +139,39 @@ def handle_text(message):
     user_id = message.from_user.id
 
     # Пропускаем команды меню
-    if message.text in ["Создать открытку", "Посмотреть шаблоны", "Помощь"]:
+    if message.text in ["Создать открытку", "Выбрать текстовку", "Посмотреть открытки", "Помощь"]:
+        return
+
+    # Обработка ответа с именем для текстовки
+    if user_id in pending_text_templates:
+        pending_data = pending_text_templates.pop(user_id)
+        language = pending_data.get("language", "ru")
+        text_id = pending_data.get("text_id")
+        template_id = pending_data.get("template_id")
+        template = _get_text_config(language, text_id)
+
+        if not template:
+            bot.send_message(
+                message.chat.id,
+                "Не удалось подготовить текстовку. Попробуй выбрать её еще раз.",
+                reply_markup=get_main_keyboard()
+            )
+            return
+
+        name_value = message.text.strip()
+        if not name_value:
+            pending_text_templates[user_id] = pending_data
+            bot.send_message(
+                message.chat.id,
+                "Имя не может быть пустым. Напиши имя или имя и отчество клиента.",
+                reply_markup=ForceReply(input_field_placeholder="Например, Иван Иванович")
+            )
+            return
+
+        final_text = template["text"].replace("{name}", name_value)
+
+        bot.send_message(message.chat.id, "Подставила имя в текстовку и создаю открытку 👇")
+        generate_card(message.chat.id, user_id, final_text, template_id=template_id)
         return
 
     # Проверяем, что пользователь выбрал шаблон
@@ -95,36 +187,20 @@ def handle_text(message):
     if message.text.startswith('/'):
         return
 
-    try:
-        template_id = user_templates[user_id]
+    generate_card(message.chat.id, user_id, message.text)
 
-        # Показываем что начали создание
-        processing_msg = bot.send_message(message.chat.id, "🔄 Создаю открытку...")
 
-        # Создаем карточку
-        output = create_card_sync(template_id, message.text)
+def _get_text_pool(language):
+    return TEXT_TEMPLATES if language == "ru" else ENG_TEXT_TEMPLATES
 
-        # Удаляем сообщение "Создаю..."
-        bot.delete_message(message.chat.id, processing_msg.message_id)
 
-        # Отправляем готовую открытку
-        bot.send_photo(
-            message.chat.id,
-            output,
-            caption="🎉 *Готово! Отправляй клиенту и возвращайся за новой открыткой.*\n\n",
-            parse_mode="Markdown",
-            reply_markup=get_main_keyboard()
-        )
+def _get_text_config(language, text_id):
+    return _get_text_pool(language).get(text_id)
 
-    except Exception as e:
-        logger.error(f"Error creating card: {e}")
-        bot.send_message(
-            message.chat.id,
-            "❌ Произошла ошибка при создании открытки. Попробуй еще раз.",
-            reply_markup=get_main_keyboard()
-        )
 
-    finally:
-        # Удаляем выбор шаблона после отправки
-        if user_id in user_templates:
-            del user_templates[user_id]
+def _preview_text(config, language):
+    sample_name = "Иван Иванович" if language == "ru" else "Mary Smith"
+    text = config["text"]
+    if "{name}" in text:
+        return text.replace("{name}", sample_name)
+    return text
