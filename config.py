@@ -115,7 +115,7 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1100,
             "max_width": 800,
-            "max_height": 300,
+            "max_height": 200,
             "line_height": 50,
             "min_font_size": 10,
             "max_font_size": 100,
@@ -123,9 +123,9 @@ TEMPLATE_CONFIGS = {
         }
     },
     "template_6": {
-        "name": "Для ET",
+        "name": "Для ЕТ",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "Для ET.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "Для ЕТ.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
