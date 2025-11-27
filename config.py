@@ -20,7 +20,7 @@ TEMPLATE_CONFIGS = {
     "template_1": {
         "name": "С мандаринами",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "card1.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "С мандарином.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
@@ -41,7 +41,7 @@ TEMPLATE_CONFIGS = {
     "template_2": {
         "name": "С красной икрой",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "card2.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "С красной икрой.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
@@ -62,7 +62,7 @@ TEMPLATE_CONFIGS = {
     "template_3": {
         "name": "С леденцом",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "card3.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
@@ -81,9 +81,72 @@ TEMPLATE_CONFIGS = {
         }
     },
     "template_4": {
+        "name": "Для Clussters",
+        "language": "ru",
+        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "font": {
+            "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
+            "size": 20,
+            "color": "white"
+        },
+        "text_position": {
+            "x": "left",
+            "x_offset": 35,
+            "y": 520,
+            "max_width": 250,
+            "max_height": 150,
+            "line_height": 30,
+            "min_font_size": 8,
+            "max_font_size": 20,
+            "align": "left"
+        }
+    },
+    "template_5": {
+        "name": "Для TTA",
+        "language": "ru",
+        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "font": {
+            "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
+            "size": 20,
+            "color": "white"
+        },
+        "text_position": {
+            "x": "left",
+            "x_offset": 35,
+            "y": 520,
+            "max_width": 250,
+            "max_height": 150,
+            "line_height": 30,
+            "min_font_size": 8,
+            "max_font_size": 20,
+            "align": "left"
+        }
+    },
+    "template_6": {
+        "name": "Для ET",
+        "language": "ru",
+        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "font": {
+            "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
+            "size": 20,
+            "color": "white"
+        },
+        "text_position": {
+            "x": "left",
+            "x_offset": 35,
+            "y": 520,
+            "max_width": 250,
+            "max_height": 150,
+            "line_height": 30,
+            "min_font_size": 8,
+            "max_font_size": 20,
+            "align": "left"
+        }
+    },
+    "template_7": {
         "name": "In English, please!",
         "language": "en",
-        "image_path": os.path.join(BASE_DIR, "templates", "card4.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "End_card.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
@@ -101,7 +164,7 @@ TEMPLATE_CONFIGS = {
             "align": "left"
         }
     }
-}
+    }
 
 TEXT_TEMPLATES = {
     "ru_1": {
