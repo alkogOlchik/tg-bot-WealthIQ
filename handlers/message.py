@@ -96,7 +96,7 @@ def show_templates(message):
         templates_info = "*Доступные открытки:*\n\n"
 
         for template_id, config in TEMPLATE_CONFIGS.items():
-            description = config.get("description", "— описание скоро добавим —")
+            description = config.get("description", "— описание появится чуть позже —")
             templates_info += f"*{config['name']}*\n"
             templates_info += f"{description}\n\n"
 
@@ -107,7 +107,7 @@ def show_templates(message):
         # Показываем превью шаблонов
         for template_id, config in TEMPLATE_CONFIGS.items():
             if os.path.exists(config["image_path"]):
-                description = config.get("description", "— описание скоро добавим —")
+                description = config.get("description", "— описание появится чуть позже —")
                 with open(config["image_path"], "rb") as f:
                     bot.send_photo(
                         message.chat.id,
@@ -162,6 +162,8 @@ def handle_text(message):
             placeholder = "Например, Иван Иванович" if language == "ru" else "e.g. Ivan Smith"
             error_message = (
                 "Имя не может быть пустым. Напиши имя или имя и отчество клиента."
+                if language == "ru"
+                else "Name can't be empty. Please type your client's name."
             )
             bot.send_message(
                 message.chat.id,

@@ -83,7 +83,7 @@ TEMPLATE_CONFIGS = {
     "template_4": {
         "name": "Для Clussters",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "Для Clussters.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
@@ -104,7 +104,7 @@ TEMPLATE_CONFIGS = {
     "template_5": {
         "name": "Для TTA",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "Для TTA.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,
@@ -125,7 +125,7 @@ TEMPLATE_CONFIGS = {
     "template_6": {
         "name": "Для ET",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "Для ET"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 20,

@@ -77,10 +77,15 @@ def process_text_template(call):
             "language": language,
             "template_id": selected_template
         }
-        placeholder = "Например, Иван Иванович" if language == "ru" else "e.g. Mary Smith"
+        if language == "ru":
+            prompt = "Как зовут клиента? Подставлю имя и сразу соберу открытку."
+            placeholder = "Например, Иван Иванович"
+        else:
+            prompt = "What's the client's name? I'll add it and finalize the card."
+            placeholder = "e.g. Ivan Smith"
         bot.send_message(
             call.message.chat.id,
-            "Как зовут клиента? Подставлю имя и сразу соберу открытку.",
+            prompt,
             reply_markup=ForceReply(
                 input_field_placeholder=placeholder
             )
