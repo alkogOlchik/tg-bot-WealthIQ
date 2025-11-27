@@ -28,8 +28,8 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
+            "x_offset": 100,
+            "y": 750,
             "max_width": 250,
             "max_height": 150,
             "line_height": 30,
