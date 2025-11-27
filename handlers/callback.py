@@ -23,13 +23,13 @@ def process_template(call):
 
     if language == "en":
         message_text = (
-            f"Great! You picked the card: *{config['name']}*\n\n"
-            "Now type the greeting text you want to place on the card.\n"
-            "For example, “Ivan Ivanovich, wishing you a New Year filled with light, clarity, and moments that truly inspire.”"
+            f"Отлично! Выбрана открытка: *{config['name']}*\n\n"
+            "Теперь напиши текст, который хочешь разместить на открытке.\n"
+            "Например, “Ivan Ivanovich, wishing you a New Year filled with light, clarity, and moments that truly inspire.”"
         )
     else:
         message_text = (
-            f"Отлично! Выбран открытку: *{config['name']}*\n\n"
+            f"Отлично! Выбрана открытка: *{config['name']}*\n\n"
             "Теперь напиши текст, который хочешь разместить на открытке.\n"
             "Например, «Иван Иванович, пусть 2026 принесет Вам радость, вдохновение и только приятные сюрпризы!»\n\n"
             "Или нажми «Выбрать текстовку»."
@@ -81,7 +81,7 @@ def process_text_template(call):
             prompt = "Как зовут клиента? Подставлю имя и сразу соберу открытку."
             placeholder = "Например, Иван Иванович"
         else:
-            prompt = "What's the client's name? I'll add it and finalize the card."
+            prompt = "Как зовут клиента? Подставлю имя и сразу соберу открытку."
             placeholder = "e.g. Ivan Smith"
         bot.send_message(
             call.message.chat.id,
