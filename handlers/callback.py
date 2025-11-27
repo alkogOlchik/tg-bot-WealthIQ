@@ -19,12 +19,25 @@ def process_template(call):
     user_templates[user_id] = template_id
 
     config = TEMPLATE_CONFIGS[template_id]
+    language = config.get("language", "ru")
+
+    if language == "en":
+        message_text = (
+            f"Great! You picked the card: *{config['name']}*\n\n"
+            "Now type the greeting text you want to place on the card.\n"
+            "For example, “Ivan Ivanovich, wishing you a New Year filled with light, clarity, and moments that truly inspire.”"
+        )
+    else:
+        message_text = (
+            f"Отлично! Выбран открытку: *{config['name']}*\n\n"
+            "Теперь напиши текст, который хочешь разместить на открытке.\n"
+            "Например, «Иван Иванович, пусть 2026 принесет Вам радость, вдохновение и только приятные сюрпризы!»\n\n"
+            "Или нажми «Выбрать текстовку»."
+        )
 
     bot.send_message(
         call.message.chat.id,
-        f"Отлично! Выбран открытку: *{config['name']}*\n\n"
-        f"Теперь напиши текст, который хочешь разместить на открытке.\n"
-        f"Например, «Иван Иванович, пусть 2026 принесет Вам радость, вдохновение и только приятные сюрпризы!»",
+        message_text,
         parse_mode="Markdown",
         reply_markup=get_main_keyboard()
     )

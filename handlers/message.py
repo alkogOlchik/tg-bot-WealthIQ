@@ -107,11 +107,12 @@ def show_templates(message):
         # Показываем превью шаблонов
         for template_id, config in TEMPLATE_CONFIGS.items():
             if os.path.exists(config["image_path"]):
+                description = config.get("description", "— описание скоро добавим —")
                 with open(config["image_path"], "rb") as f:
                     bot.send_photo(
                         message.chat.id,
                         f,
-                        caption=f"{config['name']}\n{config['description']}"
+                        caption=f"{config['name']}\n{description}"
                     )
 
     except Exception as e:
@@ -121,15 +122,13 @@ def show_templates(message):
 @bot.message_handler(func=lambda message: message.text == "Помощь")
 def show_help(message):
     help_text = """
-🤖 *Как пользоваться ботом:*
+Как пользоваться ботом:
 
-*🎨 Создать открытку:*
 1. Нажми «Создать открытку»
 2. Выбери понравившийся шаблон
-3. Напиши текст поздравления  
+3. Напиши текст поздравления или нажми «Выбрать текстовку» и выбери вариант, а затем укажи имя клиента 
 4. Получи готовую открытку!
 
-*Приятного творчества!* ✨
     """
     bot.send_message(message.chat.id, help_text, parse_mode="Markdown")
 
@@ -160,16 +159,25 @@ def handle_text(message):
         name_value = message.text.strip()
         if not name_value:
             pending_text_templates[user_id] = pending_data
+            placeholder = "Например, Иван Иванович" if language == "ru" else "e.g. Ivan Smith"
+            error_message = (
+                "Имя не может быть пустым. Напиши имя или имя и отчество клиента."
+            )
             bot.send_message(
                 message.chat.id,
-                "Имя не может быть пустым. Напиши имя или имя и отчество клиента.",
-                reply_markup=ForceReply(input_field_placeholder="Например, Иван Иванович")
+                error_message,
+                reply_markup=ForceReply(input_field_placeholder=placeholder)
             )
             return
 
         final_text = template["text"].replace("{name}", name_value)
 
-        bot.send_message(message.chat.id, "Подставил имя в текстовку и создаю открытку 👇")
+        confirmation_text = (
+            "Подставил имя в текстовку и создаю открытку 👇"
+            if language == "ru"
+            else "Added the name to the greeting and creating the card 👇"
+        )
+        bot.send_message(message.chat.id, confirmation_text)
         generate_card(message.chat.id, user_id, final_text, template_id=template_id)
         return
 

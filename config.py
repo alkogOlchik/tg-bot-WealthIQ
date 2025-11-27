@@ -29,12 +29,12 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 750,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     },
@@ -49,13 +49,13 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "x_offset": 100,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     },
@@ -70,13 +70,13 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "x_offset": 100,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     },
@@ -91,13 +91,13 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "x_offset": 100,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     },
@@ -112,13 +112,13 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "x_offset": 100,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     },
@@ -133,13 +133,13 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "x_offset": 100,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     },
@@ -154,13 +154,13 @@ TEMPLATE_CONFIGS = {
         },
         "text_position": {
             "x": "left",
-            "x_offset": 35,
-            "y": 520,
-            "max_width": 250,
-            "max_height": 150,
-            "line_height": 30,
-            "min_font_size": 8,
-            "max_font_size": 20,
+            "x_offset": 100,
+            "y": 1050,
+            "max_width": 550,
+            "max_height": 350,
+            "line_height": 50,
+            "min_font_size": 20,
+            "max_font_size": 100,
             "align": "left"
         }
     }
@@ -176,13 +176,13 @@ TEXT_TEMPLATES = {
     "ru_2": {
         "title": "Текст 2",
         "button_label": "Текст 2",
-        "text": "{name}, пусть 2026 принесет вам радость, вдохновение и только приятные сюрпризы! С наступающим!",
+        "text": "{name},  пусть 2026 принесет Вам радость, вдохновение и только приятные сюрпризы! С наступающим!",
         "requires_name": True
     },
     "ru_3": {
         "title": "Текст 3",
         "button_label": "Текст 3",
-        "text": "{name}, желаю, чтобы 2026 стал для вас годом больших идей, удачных решений и красивых моментов!",
+        "text": "{name}, желаю, чтобы 2026 стал для Вас годом больших идей, удачных решений и красивых моментов!",
         "requires_name": True
     }
 }
@@ -191,8 +191,20 @@ ENG_TEXT_TEMPLATES = {
     "en_1": {
         "title": "Text",
         "button_label": "Text 1",
-        "text": "May the coming year carry a sense of taste in everything you do. Wishing you joyful holidays!",
-        "requires_name": False
+        "text": "{name}, may the coming year carry a sense of taste in everything you do. Wishing you joyful holidays!",
+        "requires_name": True
+    },
+    "en_2": {
+        "title": "Text",
+        "button_label": "Text 2",
+        "text": "{name}, wishing you a New Year filled with light, clarity, and moments that truly inspire.",
+        "requires_name": True
+    },
+    "en_3": {
+        "title": "Text",
+        "button_label": "Text 3",
+        "text": "{name}, sending warm wishes for a calm, bright, and beautifully rewarding year ahead.",
+        "requires_name": True
     }
 }
 
