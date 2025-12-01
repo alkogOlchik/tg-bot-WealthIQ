@@ -103,7 +103,7 @@ TEMPLATE_CONFIGS = {
     },
     "template_5": {
         "name": "Для TTA",
-        "language": "ru",
+        "language": "en",
         "image_path": os.path.join(BASE_DIR, "templates", "Для TTA.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
