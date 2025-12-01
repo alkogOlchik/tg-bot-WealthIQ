@@ -135,7 +135,7 @@ TEMPLATE_CONFIGS = {
             "x": "left",
             "x_offset": 100,
             "y": 1150,
-            "max_width": 800,
+            "max_width": 700,
             "max_height": 200,
             "line_height": 50,
             "min_font_size": 10,
