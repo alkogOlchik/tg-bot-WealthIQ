@@ -95,8 +95,6 @@ def show_templates(message):
     try:
         templates_info = "*Доступные открытки:*\n\n"
 
-        for template_id, config in TEMPLATE_CONFIGS.items():
-            templates_info += f"*{config['name']}*\n"
 
         templates_info += "Хочешь создать открытку? Нажми «Создать открытку»!"
 
@@ -105,12 +103,9 @@ def show_templates(message):
         # Показываем превью шаблонов
         for template_id, config in TEMPLATE_CONFIGS.items():
             if os.path.exists(config["image_path"]):
-                description = config.get("description", "— описание появится чуть позже —")
                 with open(config["image_path"], "rb") as f:
                     bot.send_photo(
-                        message.chat.id,
-                        f,
-                        caption=f"{config['name']}\n{description}"
+                        message.chat.id
                     )
 
     except Exception as e:
