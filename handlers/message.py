@@ -96,7 +96,7 @@ def show_templates(message):
         templates_info = "*Доступные открытки:*\n\n"
 
         for template_id, config in TEMPLATE_CONFIGS.items():
-            description = config.get("description", "— описание появится чуть позже —")
+            description = config.get("description", "")
             templates_info += f"*{config['name']}*\n"
             templates_info += f"{description}\n\n"
 
