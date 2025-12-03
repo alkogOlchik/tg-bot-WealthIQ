@@ -170,7 +170,7 @@ TEXT_TEMPLATES = {
     "ru_1": {
         "title": "Текст 1",
         "button_label": "Текст 1",
-        "text": "{name}, пусть 2026 год будет таким же свежим и солнечным, как первые новогодние мандарины. С праздником вас!",
+        "text": "{name}, пусть 2026 год будет таким же свежим и солнечным, как первые новогодние мандарины!",
         "requires_name": True
     },
     "ru_2": {
@@ -197,13 +197,13 @@ ENG_TEXT_TEMPLATES = {
     "en_2": {
         "title": "Text",
         "button_label": "Text 2",
-        "text": "{name}, wishing you a New Year filled with light, clarity, and moments that truly inspire.",
+        "text": "{name}, wishing you a New Year filled with light, clarity, and moments that truly inspire",
         "requires_name": True
     },
     "en_3": {
         "title": "Text",
         "button_label": "Text 3",
-        "text": "{name}, sending warm wishes for a calm, bright, and beautifully rewarding year ahead.",
+        "text": "{name}, sending warm wishes for a calm, bright, and beautifully rewarding year ahead",
         "requires_name": True
     }
 }
