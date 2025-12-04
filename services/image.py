@@ -21,10 +21,9 @@ def create_card_sync(template_id, text):
         img = template_cache[template_id].copy()
         draw = ImageDraw.Draw(img)
 
-        # Фиксированный размер шрифта (по умолчанию 40, можно переопределить в конфиге)
+        # Фиксированный размер шрифта берём из конфига шаблона
         font_path = config["font"]["path"]
-        base_size = config["font"].get("size", 40)
-        font_size = 40  # жестко заданный размер, как просили
+        font_size = config["font"].get("size", 40)
         font = ImageFont.truetype(font_path, font_size)
 
         # Обработка переноса текста по ширине
