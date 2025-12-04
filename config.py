@@ -134,7 +134,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1300,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
