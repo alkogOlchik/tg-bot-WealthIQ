@@ -2,7 +2,7 @@ import os, io
 import logging
 from PIL import Image, ImageDraw, ImageFont
 from config import TEMPLATE_CONFIGS, template_cache, logger
-from services.fonts import get_dynamic_font, calculate_line_height
+from services.fonts import calculate_line_height
 
 
 def create_card_sync(template_id, text):
@@ -21,13 +21,13 @@ def create_card_sync(template_id, text):
         img = template_cache[template_id].copy()
         draw = ImageDraw.Draw(img)
 
-        # Сначала получаем временный шрифт для точного расчета
-        temp_font_path = config["font"]["path"]
-        temp_font = ImageFont.truetype(temp_font_path, 20)  # временный размер
+        # Фиксированный размер шрифта (по умолчанию 40, можно переопределить в конфиге)
+        font_path = config["font"]["path"]
+        base_size = config["font"].get("size", 40)
+        font_size = 40  # жестко заданный размер, как просили
+        font = ImageFont.truetype(font_path, font_size)
 
-        # Используем точный расчет с передачей draw
-        font = get_dynamic_font(template_id, text, draw)
-        # Обработка переноса текста
+        # Обработка переноса текста по ширине
         lines = wrap_text(draw, text, font, config["text_position"]["max_width"])
 
         # Рисуем текст на изображении
