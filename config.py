@@ -29,7 +29,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1250,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -50,7 +50,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1250,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -71,7 +71,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1250,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -92,7 +92,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1250,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -113,8 +113,8 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
-            "max_width": 800,
+            "y": 1250,
+            "max_width": 700,
             "max_height": 200,
             "line_height": 50,
             "min_font_size": 10,
@@ -134,7 +134,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1250,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -155,7 +155,7 @@ TEMPLATE_CONFIGS = {
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1200,
+            "y": 1250,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
