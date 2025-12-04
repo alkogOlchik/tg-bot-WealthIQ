@@ -23,13 +23,13 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "С мандарином.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1150,
+            "y": 1200,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -44,13 +44,13 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "С красной икрой.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1150,
+            "y": 1200,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -65,13 +65,13 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1150,
+            "y": 1200,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -86,13 +86,13 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "Для Clussters.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1150,
+            "y": 1200,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -107,14 +107,14 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "Для TTA.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
             "y": 1200,
-            "max_width": 700,
+            "max_width": 800,
             "max_height": 200,
             "line_height": 50,
             "min_font_size": 10,
@@ -128,13 +128,13 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "Для ЕТ.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1150,
+            "y": 1200,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
@@ -149,13 +149,13 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "Eng_card.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 20,
+            "size": 50,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 100,
-            "y": 1150,
+            "y": 1200,
             "max_width": 800,
             "max_height": 200,
             "line_height": 50,
