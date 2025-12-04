@@ -31,10 +31,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1300,
             "max_width": 800,
-            "max_height": 200,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     },
@@ -52,10 +52,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1300,
             "max_width": 800,
-            "max_height": 200,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     },
@@ -73,10 +73,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1300,
             "max_width": 800,
-            "max_height": 200,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     },
@@ -94,10 +94,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1300,
             "max_width": 800,
-            "max_height": 200,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     },
@@ -114,11 +114,11 @@ TEMPLATE_CONFIGS = {
             "x": "left",
             "x_offset": 100,
             "y": 1300,
-            "max_width": 700,
-            "max_height": 200,
+            "max_width": 800,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     },
@@ -136,10 +136,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1300,
             "max_width": 800,
-            "max_height": 200,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     },
@@ -157,10 +157,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 100,
             "y": 1300,
             "max_width": 800,
-            "max_height": 200,
+            "max_height": 150,
             "line_height": 50,
             "min_font_size": 10,
-            "max_font_size": 100,
+            "max_font_size": 80,
             "align": "left"
         }
     }
