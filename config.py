@@ -30,9 +30,9 @@ TEMPLATE_CONFIGS = {
             "x": "left",
             "x_offset": 300,
             "y": 3000,
-            "max_width": 1500,
+            "max_width": 2000,
             "max_height": 400,
-            "line_height": 100,
+            "line_height": 500,
             "min_font_size": 10,
             "max_font_size": 250,
             "align": "left"
