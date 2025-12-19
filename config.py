@@ -32,7 +32,7 @@ TEMPLATE_CONFIGS = {
             "y": 3000,
             "max_width": 2000,
             "max_height": 700,
-            "line_height": 500,
+            "line_height": 100,
             "min_font_size": 10,
             "max_font_size": 300,
             "align": "left"
