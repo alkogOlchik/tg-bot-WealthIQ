@@ -60,7 +60,7 @@ TEMPLATE_CONFIGS = {
         }
     },
     "template_3": {
-        "name": "С леденцом",
+        "name": "С елкой",
         "language": "ru",
         "image_path": os.path.join(BASE_DIR, "templates", "С елкой.png"),
         "font": {
