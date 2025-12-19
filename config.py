@@ -62,7 +62,7 @@ TEMPLATE_CONFIGS = {
     "template_3": {
         "name": "С леденцом",
         "language": "ru",
-        "image_path": os.path.join(BASE_DIR, "templates", "С леденцом.png"),
+        "image_path": os.path.join(BASE_DIR, "templates", "С елкой.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
             "size": 50,
