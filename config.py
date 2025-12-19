@@ -31,10 +31,10 @@ TEMPLATE_CONFIGS = {
             "x_offset": 300,
             "y": 3000,
             "max_width": 2000,
-            "max_height": 400,
+            "max_height": 700,
             "line_height": 500,
             "min_font_size": 10,
-            "max_font_size": 250,
+            "max_font_size": 300,
             "align": "left"
         }
     },
