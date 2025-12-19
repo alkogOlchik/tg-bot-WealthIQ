@@ -23,18 +23,18 @@ TEMPLATE_CONFIGS = {
         "image_path": os.path.join(BASE_DIR, "templates", "С мандарином.png"),
         "font": {
             "path": os.path.join(BASE_DIR, "fonts", "festive.ttf"),
-            "size": 250,
+            "size": 200,
             "color": "white"
         },
         "text_position": {
             "x": "left",
             "x_offset": 300,
-            "y": 3000,
+            "y": 3500,
             "max_width": 2500,
             "max_height": 600,
             "line_height": 300,
             "min_font_size": 10,
-            "max_font_size": 300,
+            "max_font_size": 200,
             "align": "left"
         }
     },
